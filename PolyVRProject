@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene name_suffix="0" base_name="PolyVRPro" name_space="Scene">
+  <Objects>
+    <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
+      <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.40126 0.0743435 -0.0804259" at="-0.109636 0.00350822 0.741" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+          <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
+        </Object>
+        <Object name_suffix="3" base_name="Base" name_space="__global__" type="Transform" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1">
+          <Object name_suffix="0" base_name="NAN_0" name_space="__global__" type="Object" pickable="0" visible="1">
+            <Object name_suffix="0" base_name="AST6B09259" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Base.3DS AST6B09259"/>
+            <Object name_suffix="0" base_name="AST6B09250" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Base.3DS AST6B09250"/>
+            <Object name_suffix="0" base_name="AST6B09251" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Base.3DS AST6B09251"/>
+            <Object name_suffix="0" base_name="AST6B09252" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Base.3DS AST6B09252"/>
+            <Object name_suffix="0" base_name="AST6B09253" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Base.3DS AST6B09253"/>
+            <Object name_suffix="0" base_name="AST6B09254" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Base.3DS AST6B09254"/>
+            <Object name_suffix="0" base_name="AST6B09255" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Base.3DS AST6B09255"/>
+          </Object>
+        </Object>
+        <Object name_suffix="3" base_name="Arm1" name_space="__global__" type="Transform" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1">
+          <Object name_suffix="0" base_name="Arm1" name_space="__global__" type="Object" pickable="0" visible="1">
+            <Object name_suffix="0" base_name="NONE-DC_Sh" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0" at="0.7 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm1.3DS NONE-DC_Sh"/>
+            <Object name_suffix="0" base_name="NONE-DC_S0" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0" at="0.7 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm1.3DS NONE-DC_S0"/>
+            <Object name_suffix="0" base_name="NONE-DC_S1" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0" at="0.7 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm1.3DS NONE-DC_S1"/>
+            <Object name_suffix="0" base_name="NONE-DC_S2" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0" at="0.7 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm1.3DS NONE-DC_S2"/>
+          </Object>
+        </Object>
+        <Object name_suffix="3" base_name="Arm2" name_space="__global__" type="Transform" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1">
+          <Object name_suffix="0" base_name="Arm2" name_space="__global__" type="Object" pickable="0" visible="1">
+            <Object name_suffix="1" base_name="NONE-DC_Sh" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0.55" at="0.7 0 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm2.3DS NONE-DC_Sh"/>
+            <Object name_suffix="1" base_name="NONE-DC_S0" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0.55" at="0.7 0 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm2.3DS NONE-DC_S0"/>
+            <Object name_suffix="1" base_name="NONE-DC_S1" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0.55" at="0.7 0 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm2.3DS NONE-DC_S1"/>
+            <Object name_suffix="1" base_name="NONE-DC_S2" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0.55" at="0.7 0 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm2.3DS NONE-DC_S2"/>
+            <Object name_suffix="0" base_name="NONE-DC_S3" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0.55" at="0.7 0 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm2.3DS NONE-DC_S3"/>
+            <Object name_suffix="0" base_name="NONE-DC_S4" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0.55" at="0.7 0 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm2.3DS NONE-DC_S4"/>
+            <Object name_suffix="0" base_name="NONE-DC_S5" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0.55" at="0.7 0 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm2.3DS NONE-DC_S5"/>
+            <Object name_suffix="0" base_name="NONE-DC_S6" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 0 0.55" at="0.7 0 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Arm2.3DS NONE-DC_S6"/>
+          </Object>
+        </Object>
+        <Object name_suffix="3" base_name="Motor" name_space="__global__" type="Transform" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1">
+          <Object name_suffix="0" base_name="Motor" name_space="__global__" type="Object" pickable="0" visible="1">
+            <Object name_suffix="0" base_name="DirectConn" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 -0.206 0.55" at="0.7 -0.206 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Motor.3DS DirectConn"/>
+            <Object name_suffix="0" base_name="DirectCon0" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 -0.206 0.55" at="0.7 -0.206 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Motor.3DS DirectCon0"/>
+            <Object name_suffix="0" base_name="DirectCon1" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 -0.206 0.55" at="0.7 -0.206 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Motor.3DS DirectCon1"/>
+            <Object name_suffix="0" base_name="DirectCon2" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 -0.206 0.55" at="0.7 -0.206 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Motor.3DS DirectCon2"/>
+            <Object name_suffix="0" base_name="DirectCon3" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 -0.206 0.55" at="0.7 -0.206 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Motor.3DS DirectCon3"/>
+            <Object name_suffix="0" base_name="DirectCon4" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 -0.206 0.55" at="0.7 -0.206 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Motor.3DS DirectCon4"/>
+            <Object name_suffix="0" base_name="DirectCon5" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0.7 -0.206 0.55" at="0.7 -0.206 -0.45" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Fräse/Exports/Motor.3DS DirectCon5"/>
+          </Object>
+        </Object>
+      </Object>
+    </Object>
+  </Objects>
+  <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
+  <Scripts>
+    <Script name_suffix="0" base_name="GoTo" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	p1 = VR.Path()
+	p2 = VR.Path()
+	p3 = VR.Path()
+	
+	x_curr=0 #x-curr
+	y_curr=0 #y-curr
+	z_curr=0 #z-curr
+	
+	speed=1
+	x_next=x-next   #MAX:0.7
+	y_next=y-next   #MAX-0.206
+	z_next=z-next   #MAX0.55
+	
+	
+	
+	p1.set([x_curr,0,0], [0,0,-1], [x_next,0,0], [0,0,-1], 2)
+	p2.set([x_curr,0,z_curr], [0,0,-1], [x_next,0,z_next], [0,0,-1], 2)
+	p3.set([x_curr,y_curr,z_curr], [0,0,-1], [x_next,y_next,z_next], [0,0,-1], 2)
+	
+	
+	for obj in VR.getRoot().find("Arm1").getChildren(True):
+		obj.animate(p1, speed, 0, True)
+			
+	for obj in VR.getRoot().find("Arm2").getChildren(True):
+		obj.animate(p2, speed, 0, True)
+		
+	for obj in VR.getRoot().find("Motor").getChildren(True):
+		obj.animate(p3, speed, 0, True)
+</core>
+      <arg type="float" value="0.7" name_suffix="0" base_name="x-next" name_space="GoTo"/>
+      <arg type="float" value="-0.206" name_suffix="0" base_name="y-next" name_space="GoTo"/>
+      <arg type="float" value="0.55" name_suffix="0" base_name="z-next" name_space="GoTo"/>
+    </Script>
+    <Script name_suffix="0" base_name="ReadFile" name_space="__script__" type="Python" mobile="">
+      <core>
+	def LineManipulation(line):
+		import VR
+		
+		#ForTesting
+		VR.triggerScript(GoTo(0.7, -0.206, 0.55))
+		#GoTo(0.7, -0.205, 0.55)
+		
+	import glob
+	print glob.glob("./*")	
+	
+
+	fname="./g_code_Example"
+	
+	with open(fname) as f:
+		line = f.readlines()
+		
+		if line[0]!="%":
+			LineManipulation(line)
+</core>
+    </Script>
+  </Scripts>
+  <Sockets/>
+  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Navigation active="Orbit"/>
+  <Materials/>
+</Scene>
