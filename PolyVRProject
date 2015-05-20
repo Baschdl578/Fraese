@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.40126 0.0743435 -0.0804259" at="-0.109636 0.00350822 0.741" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.43936 0.257277 -0.158635" at="0.503509 -0.0867809 0.213992" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="3" base_name="Base" name_space="__global__" type="Transform" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1">
@@ -53,63 +53,101 @@
   </Objects>
   <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
   <Scripts>
-    <Script name_suffix="0" base_name="GoTo" name_space="__script__" type="Python" mobile="">
+    <Script name_suffix="0" base_name="ParseGCode" name_space="__script__" type="Python" mobile="">
       <core>
-	import VR
-	
-	p1 = VR.Path()
-	p2 = VR.Path()
-	p3 = VR.Path()
-	
-	x_curr=0 #x-curr
-	y_curr=0 #y-curr
-	z_curr=0 #z-curr
-	
-	speed=1
-	x_next=x-next   #MAX:0.7
-	y_next=y-next   #MAX-0.206
-	z_next=z-next   #MAX0.55
-	
-	
-	
-	p1.set([x_curr,0,0], [0,0,-1], [x_next,0,0], [0,0,-1], 2)
-	p2.set([x_curr,0,z_curr], [0,0,-1], [x_next,0,z_next], [0,0,-1], 2)
-	p3.set([x_curr,y_curr,z_curr], [0,0,-1], [x_next,y_next,z_next], [0,0,-1], 2)
-	
-	
-	for obj in VR.getRoot().find("Arm1").getChildren(True):
-		obj.animate(p1, speed, 0, True)
-			
-	for obj in VR.getRoot().find("Arm2").getChildren(True):
-		obj.animate(p2, speed, 0, True)
-		
-	for obj in VR.getRoot().find("Motor").getChildren(True):
-		obj.animate(p3, speed, 0, True)
-</core>
-      <arg type="float" value="0.7" name_suffix="0" base_name="x-next" name_space="GoTo"/>
-      <arg type="float" value="-0.206" name_suffix="0" base_name="y-next" name_space="GoTo"/>
-      <arg type="float" value="0.55" name_suffix="0" base_name="z-next" name_space="GoTo"/>
-    </Script>
-    <Script name_suffix="0" base_name="ReadFile" name_space="__script__" type="Python" mobile="">
-      <core>
+	import re
+	fname="./g_code_Example"
 	def LineManipulation(line):
 		import VR
 		
-		#ForTesting
-		VR.triggerScript(GoTo(0.7, -0.206, 0.55))
-		#GoTo(0.7, -0.205, 0.55)
+		oldX=0.0
+		oldY=0.0
+		oldZ=0.0
 		
-	import glob
-	print glob.glob("./*")	
-	
+		newX=oldX
+		newY=oldY
+		newZ=oldZ
 
-	fname="./g_code_Example"
+		def GoTo(xCurr=0.0, yCurr=0.0, zCurr=0.0, xNext=0.7, yNext=-0.206, zNext=0.55):
+			
+			p1 = VR.Path()
+			p2 = VR.Path()
+			p3 = VR.Path()
 	
-	with open(fname) as f:
-		line = f.readlines()
+			x_curr=xCurr
+			y_curr=yCurr
+			z_curr=zCurr
+	
+			speed=1
+			x_next=xNext   #MAX:0.7
+			y_next=yNext   #MAX-0.206
+			z_next=zNext   #MAX0.55
+	
+	
+	
+			p1.set([x_curr,0,0], [0,0,0], [x_next,0,0], [0,0,-1], 2)
+			p2.set([x_curr,0,z_curr], [0,0,-1], [x_next,0,z_next], [0,0,-1], 2)
+			p3.set([x_curr,y_curr,z_curr], [0,0,-1], [x_next,y_next,z_next], [0,0,-1], 2)
 		
-		if line[0]!="%":
+	
+			for obj in VR.getRoot().find("Arm1").getChildren(True):
+				obj.animate(p1, speed, 0, True)
+			
+			for obj in VR.getRoot().find("Arm2").getChildren(True):
+				obj.animate(p2, speed, 0, True)
+			
+			for obj in VR.getRoot().find("Motor").getChildren(True):
+				obj.animate(p3, speed, 0, True)
+		
+		
+		regex1 = re.compile('N.+\sG01.*')
+		
+		if regex1.match(line):
+			print "\nSet of Coordinates"
+			tmpReg = re.compile('X-?[0-9]+')
+			m = tmpReg.search(line)
+			if m:
+				xCoord = m.group()
+				newX = float(xCoord[1:])
+				
+			tmpReg = re.compile('Y-?[0-9]+')
+			m = tmpReg.search(line)
+			if m:
+				xCoord = m.group()
+				newY = float(xCoord[1:])
+				
+			tmpReg = re.compile('Z-?[0-9]+')
+			m = tmpReg.search(line)
+			if m:
+				xCoord = m.group()
+				newZ = float(xCoord[1:])
+				
+			
+			print "X: " + str(newX)
+			print "Y: " + str(newY)
+			print "Z: " + str(newZ)
+			
+			#GoTo(oldX, oldY oldZ, newX, newY, newZ)
+			
+##MARKER			
+		
+		
+	
+	regex= re.compile('N.+\sG.+')
+	with open(fname) as f:
+		lines = f.readlines()
+	
+	for line in lines:
+		if regex.match(line):
 			LineManipulation(line)
+		
+		
+		
+		
+		
+		
+		
+		
 </core>
     </Script>
   </Scripts>
