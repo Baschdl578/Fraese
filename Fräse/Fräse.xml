@@ -11,7 +11,126 @@
   </Objects>
   <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
   <Scripts>
-    <Script name_suffix="0" base_name="Script" name_space="__script__" type="Python" mobile="">
+    <Script name_suffix="0" base_name="ParseGCode" name_space="__script__" type="Python" mobile="">
+      <core>
+	import re
+	import VR
+	import math
+	
+	path = VR.Path()
+	coordinates = [[0, 0, 0]]
+	orientations = [[0, 0, -1]]
+	
+	regex= re.compile('N.+\sG.+')
+	with open(filepath) as file:
+		for line in file:
+			regexG01 = re.compile('N.+\sG01.*')
+			regexG02 = re.compile('N.+\sG02.*')
+		
+			if regexG01.match(line):
+				newX = coordinates[len(coordinates) - 1][0]
+				newY = coordinates[len(coordinates) - 1][1]
+				newZ = coordinates[len(coordinates) - 1][2]
+			
+				tmpReg = re.compile('X-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					xCoord = m.group()
+					newX = float(xCoord[1:])
+				
+				tmpReg = re.compile('Y-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					xCoord = m.group()
+					newY = float(xCoord[1:])
+				
+				tmpReg = re.compile('Z-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					xCoord = m.group()
+					newZ = float(xCoord[1:])
+				
+				coordinates.append([newX, newY, newZ])
+				orientations.append(len(orientations) - 1)
+				
+				
+			if regexG02.match(line):
+				
+				oldX = coordinates[len(coordinates) - 1][0]
+				oldY = coordinates[len(coordinates) - 1][1]
+				oldZ = coordinates[len(coordinates) - 1][2]
+				
+				newX1 = oldX
+				newY1 = oldY
+				newZ1 = oldZ
+				
+				newX2 = oldX
+				newY2 = oldY
+				newZ2 = oldZ
+				
+				centerX = oldX
+				centerY = oldY
+				centerZ = oldZ
+				
+				tmpReg = re.compile('X-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					coord = m.group()
+					newX2 = float(coord[1:])
+				
+				tmpReg = re.compile('Y-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					coord = m.group()
+					newY2 = float(coord[1:])
+				
+				tmpReg = re.compile('Z-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					coord = m.group()
+					newZ2 = float(coord[1:])
+					
+			
+				tmpReg = re.compile('I-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					coord = m.group()
+					centerX += float(coord[1:])
+					
+				tmpReg = re.compile('J-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					coord = m.group()
+					centerY += float(coord[1:])
+					
+				tmpReg = re.compile('K-?[0-9]+\.?[0-9]*')
+				m = tmpReg.search(line)
+				if m:
+					coord = m.group()
+					centerZ += float(coord[1:])
+					
+				#print "\nSet of Coordinates:\n" + str(newX2) + "\n" + str(newY2) + "\n" + str(newZ2) + "\nCenter:\n" + str(centerX) + "\n" + str(centerY) + "\n" + str(centerZ)
+				
+				angle = math.acos((((oldX-centerX) * (newX2-centerX)) + ((oldY-centerY) * (newY2-centerY)) + ((oldZ-centerZ) * (newZ2-centerZ))) / (math.sqrt(math.pow((oldX-centerX), 2) + math.pow((oldY-centerY), 2) + math.pow((oldZ-centerZ), 2)) * (math.sqrt(math.pow((newX2-centerX), 2) + math.pow((newY2-centerY), 2) + math.pow((newZ2-centerZ), 2)))))
+				print "Angle: " + str(math.degrees(angle)) + "°"
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+</core>
+      <arg type="str" value="g_code_Example" name_suffix="0" base_name="filepath" name_space="ParseGCode"/>
+    </Script>
+    <Script name_suffix="0" base_name="init" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
 	r = VR.getRoot().find('Headlight')
@@ -60,7 +179,6 @@
 		VR.fraese = Fraese()
 			
 	VR.fraese.start()
-	VR.fraese.stop()
 </core>
     </Script>
   </Scripts>
