@@ -111,8 +111,26 @@
 					
 				#print "\nSet of Coordinates:\n" + str(newX2) + "\n" + str(newY2) + "\n" + str(newZ2) + "\nCenter:\n" + str(centerX) + "\n" + str(centerY) + "\n" + str(centerZ)
 				
-				angle = math.acos((((oldX-centerX) * (newX2-centerX)) + ((oldY-centerY) * (newY2-centerY)) + ((oldZ-centerZ) * (newZ2-centerZ))) / (math.sqrt(math.pow((oldX-centerX), 2) + math.pow((oldY-centerY), 2) + math.pow((oldZ-centerZ), 2)) * (math.sqrt(math.pow((newX2-centerX), 2) + math.pow((newY2-centerY), 2) + math.pow((newZ2-centerZ), 2)))))
-				print "Angle: " + str(math.degrees(angle)) + "°"
+				#angle = math.acos((((oldX-centerX) * (newX2-centerX)) + ((oldY-centerY) * (newY2-centerY)) + ((oldZ-centerZ) * (newZ2-centerZ))) / (math.sqrt(math.pow((oldX-centerX), 2) + math.pow((oldY-centerY), 2) + math.pow((oldZ-centerZ), 2)) * (math.sqrt(math.pow((newX2-centerX), 2) + math.pow((newY2-centerY), 2) + math.pow((newZ2-centerZ), 2)))))
+				#print "Angle: " + str(math.degrees(angle)) + "°"
+				
+				tmpX = oldX/2 + newX2/2
+				tmpY = oldY/2 + newY2/2
+				tmpZ = oldZ/2 + newZ2/2
+				
+				tmpX -= centerX
+				tmpY -= centerY
+				tmpZ -= centerZ
+				
+				radius = math.sqrt(math.pow((oldX-centerX), 2) + math.pow((oldY-centerY), 2) + math.pow((oldZ-centerZ), 2))
+				factor = radius / math.sqrt(math.pow(tmpX, 2) + math.pow(tmpY, 2) + math.pow(tmpZ, 2))
+				
+				newX1 = (tmpX * factor) + centerX
+				newY1 = (tmpY * factor) + centerY
+				newZ1 = (tmpZ * factor) + centerZ
+				
+				
+				
 				
 				
 				
