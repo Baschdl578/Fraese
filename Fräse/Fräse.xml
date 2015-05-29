@@ -25,7 +25,7 @@
 	_ZOFFSET = 0
 	
 	path = VR.Path()
-	coordinates = [[0, 0, 0]]r
+	coordinates = [[0, 0, 0]]
 	orientations = [[0, 0, -1]]
 	
 	with open(filepath) as file:
