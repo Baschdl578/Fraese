@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.435842 -0.768236 -0.599002" at="0.448397 0.423035 0.0812201" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.435214 -0.8278 -0.633013" at="0.448397 0.423035 0.0812201" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -25,7 +25,7 @@
 	_ZOFFSET = 0
 	
 	path = VR.Path()
-	coordinates = [[0, 0, 0]]r
+	coordinates = [[0, 0, 0]]
 	orientations = [[0, 0, -1]]
 	
 	with open(filepath) as file:
@@ -262,6 +262,50 @@
 				
 </core>
       <arg type="str" value="NewModell1.nc" name_suffix="0" base_name="filepath" name_space="ParseGCode"/>
+    </Script>
+    <Script name_suffix="0" base_name="Script" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	class FraeseController:
+		def __init__(self):
+			#geometrie laden?
+			print "initialisiere Fraesenklasse"
+			
+		#rohling: Ein Geometriedings oder so
+		# dateipfad zum modell oder so, wie ihr wollt.
+		def startFraese(self,rohling,modell):
+			print "Starte Fräsvorgang"
+			#tür zu
+			
+			#fräsen
+			
+			#tür auf
+			
+			#fertig - callback an Logistik
+			
+			#Felge erzeugen
+			objekt = rohling # rohling bitte durch fertige felge ersetzen
+			#if (modell == 0):#Alisa sagt: Ihr kriegt von mir nur nen int (1 oder 2), der das Modell repräsentiert.
+				# Kümmert euch bitte selbst drum, welchen Pfad oder wasauchimmer ihr dann hier haben wollt.
+				# VR.felge1 wird im Moment in initScene erstellt. duplicate() erstellt ein Duplikat davon.
+			#	objekt = VR.felge0.duplicate()
+			#elif (modell == 1):
+			#	objekt = VR.felge1.duplicate()
+			#objekt.setFrom(VR.fraese_ablegepunkt)
+			felge = VR.felge0.duplicate()
+			objekt = VR.log.addProduct(felge)
+			#print objekt
+			#objekt = felge
+			print "Fraesevorgang done, call back Logistik"
+			VR.logisticController.fraeseDone(objekt)
+		
+		
+		
+		
+
+	VR.fraeseController = FraeseController()
+</core>
     </Script>
     <Script name_suffix="0" base_name="init" name_space="__script__" type="Python" mobile="">
       <core>
