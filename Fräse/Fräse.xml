@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.689371 -1.34698 -1.44006" at="0.448397 0.423035 0.0812201" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.467506 -1.66868 -1.42965" at="0.448397 0.423035 0.0812201" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -33,6 +33,15 @@
 			r.addChild(self.Arm2)
 			r.addChild(self.Motor)
 			
+			#Türen
+			self.p1 = VR.Path()
+			self.p2 = VR.Path()
+			#self.p1.set([0.34,0,0], [0,0,-1], [0,0,0], [0,0,-1], 2)
+			#self.p2.set([-0.14,0,0], [0,0,-1], [0.205,0,0], [0,0,-1], 2)
+			#Just temporarily opening the Door for Testing          
+			self.p1.set([0,0,0], [0,0,-1], [0.34,0,0], [0,0,-1], 2)
+			self.p2.set([0.205,0,0], [0,0,-1], [-0.14,0,0], [0,0,-1], 2) 
+			
 			self.LeftDoor.setFrom([0.34, 0, 0])
 			self.RightDoor.setFrom([-0.14, 0, 0])
 			
@@ -41,13 +50,14 @@
 		# dateipfad zum modell oder so, wie ihr wollt.
 		def startFraese(self,rohling,modell):
 			print "Starte Fräsvorgang"
-			#temporär
-			VR.fraeseController.start()
 			#tür zu
+			self.useDoor()
 			
 			#fräsen
+			self.startFraesen()
 			
 			#tür auf
+			self.useDoor()
 			
 			#fertig - callback an Logistik
 			
@@ -60,26 +70,20 @@
 			#elif (modell == 1):
 			#	objekt = VR.felge1.duplicate()
 			#objekt.setFrom(VR.fraese_ablegepunkt)
-			felge = VR.felge0.duplicate()
-			objekt = VR.log.addProduct(felge)
+			#felge = VR.felge0.duplicate()
+			#objekt = VR.log.addProduct(felge)
 			#print objekt
 			#objekt = felge
 			print "Fraesevorgang done, call back Logistik"
-			VR.logisticController.fraeseDone(objekt)
+			#VR.logisticController.fraeseDone(objekt)
 			
-		def start(self):
-			p1 = VR.Path()
-			p2 = VR.Path()
-			#p1.set([0.34,0,0], [0,0,-1], [0,0,0], [0,0,-1], 2)
-			#p2.set([-0.14,0,0], [0,0,-1], [0.205,0,0], [0,0,-1], 2)
-			#Just temporarily opening the Door for Testing		
-			p1.set([0,0,0], [0,0,-1], [0.34,0,0], [0,0,-1], 2)
-			p2.set([0.205,0,0], [0,0,-1], [-0.14,0,0], [0,0,-1], 2)			
+		def useDoor(self):
+			self.LeftDoor.animate(self.p1, 1, 0, True)
+			self.RightDoor.animate(self.p2, 1, 0, True)
+			self.p1.invert()
+			self.p2.invert()
 			
-			self.LeftDoor.animate(p1, 1, 0, True)
-			self.RightDoor.animate(p2, 1, 0, True)
-			
-			
+		def startFraesen(self):
 			paths = VR.ParseGCode("NewModell1.nc")
 			p1 = paths[0]
 			p2 = paths[1]
@@ -362,6 +366,7 @@
 	
 	VR.fraeseController.startFraese(None,0)
 </core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="0" base_name="trigger" name_space="__global__"/>
     </Script>
   </Scripts>
   <Sockets/>
