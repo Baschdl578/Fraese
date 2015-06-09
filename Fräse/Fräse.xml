@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.284658 -0.370535 -1.50055" at="0.448397 0.423035 0.0812201" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.4034 -0.174881 -0.638297" at="0.448397 0.423035 0.0812201" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -15,15 +15,20 @@
       <core>
 	import VR
 	import math
-	r = VR.getRoot().find('Headlight')
+	
 	Pi = math.pi
+	debugDoor = True
 	
 	class FraeseController:
-		def __init__(self):
+		def __init__(self,r):
 			print "initialisiere Fraesenklasse"
+			self.parent = r
+			VR.fraese_ablegepunkt = [0.325,0.37,0.07]
+			#VR.fraese_scale = 0.06
+			VR.fraese_scale = 0.095
+			#load Geometry
 			self.Base = VR.loadGeometry('Base.dae')
 			self.LeftDoor = VR.loadGeometry('TrLinks.dae')
-			
 			self.RightDoor = VR.loadGeometry('TrRechts.dae')
 			self.Arm1 = VR.loadGeometry('Arm1.dae')
 			self.Arm2 = VR.loadGeometry('Arm2.dae')
@@ -35,45 +40,41 @@
 			r.addChild(self.Arm2)
 			r.addChild(self.Motor)
 			
-			#Türen
-			self.p1 = VR.Path()
-			self.p2 = VR.Path()
-			#self.p1.set([0.34,0,0], [0,0,-1], [0,0,0], [0,0,-1], 2)
-			#self.p2.set([-0.14,0,0], [0,0,-1], [0.205,0,0], [0,0,-1], 2)
-			#Just temporarily opening the Door for Testing          
-			self.p1.set([0,0,0], [0,0,-1], [0.34,0,0], [0,0,-1], 2)
-			self.p2.set([0.205,0,0], [0,0,-1], [-0.14,0,0], [0,0,-1], 2) 
-			
+			#Door close (invert will nicht)
+			self.p1c = VR.Path()
+			self.p1c.set([0.34,0,0], [0,0,-1], [0,1,0],[0,0,0], [0,0,-1], [0,1,0], 2)
+			self.p2c = VR.Path()
+			self.p2c.set([-0.14,0,0], [0,0,-1], [0,1,0],[0.205,0,0], [0,0,-1], [0,1,0], 2)
+			#Door open
+			self.p1o = VR.Path()
+			self.p1o.set([0,0,0], [0,0,-1], [0.34,0,0], [0,0,-1], 2)
+			self.p2o = VR.Path()
+			self.p2o.set([0.205,0,0], [0,0,-1], [-0.14,0,0], [0,0,-1], 2) 
+	
+			self.doorOpen = True
 			self.LeftDoor.setFrom([0.34, 0, 0])
 			self.RightDoor.setFrom([-0.14, 0, 0])
 			
-			VR.fraese_ablegepunkt = [0.325,0.37,0.07]
-			VR.fraese_scale = 0.06
+	
 			
 			
 		#rohling: Ein Geometriedings oder so
-		# dateipfad zum modell oder so, wie ihr wollt.
 		def startFraese(self,rohling,modell):
 			print "Starte Fräsvorgang"
+			#rohling positionieren
 			rohling.rotate(1,0,0, -Pi)
 			rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			rohling.setFrom(VR.fraese_ablegepunkt)
-	
-			r.addChild(rohling)
-			#tür zu
-			self.useDoor()
-			
+			self.parent.addChild(rohling)
+				
 			#fräsen
 			self.startFraesen()
-			VR.stackCall( self.stop, 10, [modell,rohling] )
 			
-		def useDoor(self):
-			self.LeftDoor.animate(self.p1, 1, 0, True)
-			self.RightDoor.animate(self.p2, 1, 0, True)
-			self.p1.invert()
-			self.p2.invert()
+			VR.stackCall( self.stop, 10, [modell,rohling] )
+
 			
 		def startFraesen(self):
+			self.useDoor()
 			paths = VR.ParseGCode("NewModell1.nc")
 			p1 = paths[0]
 			p2 = paths[1]
@@ -97,19 +98,28 @@
 			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			objekt.setFrom(VR.fraese_ablegepunkt)
 			rohling.destroy()
-			r.addChild(objekt)
+			self.parent.addChild(objekt)
 			
 			#objekt = VR.log.addProduct(felge)
 			#print objekt
 			#objekt = felge
 			print "Fraesevorgang done, call back Logistik"
 			VR.logisticController.fraeseDone(objekt)
-		
+					
+		def useDoor(self):
+			if self.doorOpen and not debugDoor:	
+				self.LeftDoor.animate(self.p1c, 1, 0, True)
+				self.RightDoor.animate(self.p2c, 1, 0, True)
+			else:
+				self.LeftDoor.animate(self.p1o, 1, 0, True)
+				self.RightDoor.animate(self.p2o, 1, 0, True)
+			self.doorOpen = not self.doorOpen
 			
 		
 	if not hasattr(VR, 'fraeseController'):
-		VR.fraeseController = FraeseController()
+		VR.fraeseController = FraeseController(root)
 </core>
+      <arg type="VRPyGeometryType" value="0" name_suffix="0" base_name="root" name_space="FreaseControl"/>
     </Script>
     <Script name_suffix="0" base_name="ParseGCode" name_space="__script__" type="Python" mobile="">
       <core>
@@ -366,7 +376,7 @@
     <Script name_suffix="0" base_name="init" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
-	VR.FreaseControl()
+
 	
 	class LC:
 		def fraeseDone(self,object):
@@ -377,7 +387,9 @@
 	rohling = VR.loadGeometry('rimSaab_Rohling.dae')
 
 	VR.felge0 = VR.loadGeometry('rim_saab.dae')
+	VR.felge1 = VR.loadGeometry('rim_saab.dae')
 	
+	VR.FreaseControl(VR.getRoot().find('Headlight'))
 	VR.fraeseController.startFraese(rohling,0)
 	
 
