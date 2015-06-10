@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.4034 -0.174881 -0.638297" at="0.448397 0.423035 0.0812201" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.185554 -0.361953 -0.513873" at="0.0995251 0.186803 0.0812201" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -18,6 +18,10 @@
 	
 	Pi = math.pi
 	debugDoor = True
+	debugdraw = True
+	
+	_animationTime = 50
+	_animationOffset = 0
 	
 	class FraeseController:
 		def __init__(self,r):
@@ -70,7 +74,7 @@
 			#fräsen
 			self.startFraesen()
 			
-			VR.stackCall( self.stop, 10, [modell,rohling] )
+			VR.stackCall( self.stop, _animationTime+_animationOffset , [modell,rohling] )
 
 			
 		def startFraesen(self):
@@ -80,9 +84,22 @@
 			p2 = paths[1]
 			p3 = paths[2]
 			
-			self.Motor.animate(p1, 50, 0, False)
-			self.Arm2.animate(p2, 50, 0, False)
-			self.Arm1.animate(p3, 50, 0, False)
+			if debugdraw:
+				s = VR.Stroke('path')
+				
+				s.addPath(paths[3])
+				b=0.005
+				prof = []
+				prof.append([-b,0,b])
+				prof.append([-b,0,-b])
+				prof.append([b,0,-b])
+				prof.append([b,0,b])
+				s.strokeProfile(prof, True, True)
+				self.parent.addChild(s)
+			
+			self.Motor.animate(p1, _animationTime, _animationOffset, False)
+			self.Arm2.animate(p2, _animationTime, _animationOffset, False)
+			self.Arm1.animate(p3, _animationTime, _animationOffset, False)
 						
 			
 		def stop(self,modell,rohling):#fertig - callback an Logistik
@@ -126,6 +143,14 @@
 	import re
 	import VR
 	import math
+	
+	comp=1
+	
+	#notwendeig damit der pfad auch am Fräskopf ist
+	debugx = -0.02
+	debugy = 0.145
+	debugz = -0.12
+	
 	
 	_XSCALE = 0.0025
 	_YSCALE = 0.0025
@@ -333,30 +358,38 @@
 			if regexG19.match(line):
 				planeConstCoord = "X"
 				
-				
+
 	p1 = VR.Path()
 	p2 = VR.Path()
 	p3 = VR.Path()
+	pd = VR.Path()
 	i = 0
 	print "Coordinates:"
 	while i &lt; (len(coordinates) - 1):
-		print "X: " + str(coordinates[i][0]) + ", Y: " + str(coordinates[i][1]) + ", Z: " + str(coordinates[i][2])
+		#print "X: " + str(coordinates[i][0]) + ", Y: " + str(coordinates[i][1]) + ", Z: " + str(coordinates[i][2])
 		coord = [(coordinates[i][0] * _XSCALE) + _XOFFSET, (coordinates[i][1] * _YSCALE) + _YOFFSET, -(coordinates[i][2] * _ZSCALE) - _ZOFFSET]
 		p1.addPoint(coord, orientations[i], [0, 0, 0], [0, 0, 0])
+		pd.addPoint([coord[0]+debugx,  coord[1]+debugy, coord[2]+debugz ], orientations[i], [0, 0, 0], [0, 0, 0])
 		coord = [(coordinates[i][0] * _XSCALE) + _XOFFSET, (coordinates[i][1] * _YSCALE) + _YOFFSET, 0]
 		p2.addPoint(coord, [0, 0, -1], [0, 0, 0], [0, 0, 0])
 		coord = [(coordinates[i][0] * _XSCALE) + _XOFFSET, 0, 0]
 		p3.addPoint(coord, [0, 0, -1], [0, 0, 0], [0, 0, 0])
+		
 		i += 1
+		
 				
 	p1.addPoint([0, 0, 0], [0, 0, -1], [0, 0, 0], [0, 0, 0])
 	p2.addPoint([0, 0, 0], [0, 0, -1], [0, 0, 0], [0, 0, 0])
 	p3.addPoint([0, 0, 0], [0, 0, -1], [0, 0, 0], [0, 0, 0])
-	p1.compute(1)
-	p2.compute(1)
-	p3.compute(1)
+	pd.addPoint([debugx, debugy, debugz], [0, 0, -1], [0, 0, 0], [0, 0, 0])
+	p1.compute(comp)
+	p2.compute(comp)
+	p3.compute(comp)
+	pd.compute(comp)
 	
-	paths = [p1, p2, p3]
+	paths = [p1, p2, p3,pd]
+	
+		
 	
 	return paths
 				
@@ -377,7 +410,6 @@
       <core>
 	import VR
 
-	
 	class LC:
 		def fraeseDone(self,object):
 			print "Callback done"
