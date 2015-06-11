@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene name_suffix="0" base_name="strokeCSG" name_space="Scene">
+  <Objects>
+    <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
+      <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-3.63408 13.5254 -3.85078" at="0.0579678 1.56825 0.0579681" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+          <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
+        </Object>
+      </Object>
+    </Object>
+  </Objects>
+  <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
+  <Scripts>
+    <Script name_suffix="0" base_name="init" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	VR.full = True
+	VR.sub = False
+	
+	bohrtiefe = 0.2
+	bohrhoehe = 0.6
+	bohrbreite = 0.1
+	
+	offsetx = 0.0
+	offsetz = 0.5
+	#Path def
+	VR.points = [
+	[-0.5+offsetx,bohrtiefe,0+offsetz],
+	[-0.3+offsetx,bohrtiefe,-0.05+offsetz],[-0.05+offsetx,bohrtiefe,-0.2+offsetz],[-0.1+offsetx,bohrtiefe,-0.05+offsetz], #flosse
+	[0+offsetx,bohrtiefe,0+offsetz],[0.25+offsetx,bohrtiefe,0.2+offsetz],
+	[0.5+offsetx,bohrtiefe,-0.1+offsetz],[0.7+offsetx,bohrtiefe,0.7+offsetz],[0.25+offsetx,bohrtiefe,0.3+offsetz], #schwanz
+	[0+offsetx,bohrtiefe,0.5+offsetz],[-0.5+offsetx,bohrtiefe,0.5+offsetz],[-0.75+offsetx,bohrtiefe,0.25+offsetz]]
+	VR.points
+	
+	VR.directions = [[1,0,0],[1,0,0],[0,0,1],[-1,0,0],[-1,0,0],[0,0,-1]]
+	VR.up = [0,1,0]
+	VR.color = [1,0,0]
+	
+	# points zu profile converter
+	VR.prof_pnts = [ [p[0], p[2], 0] for p in VR.points ]
+		
+	#Profile
+	VR.prof = []
+	VR.prof.append([-bohrbreite,bohrhoehe,0])
+	VR.prof.append([-bohrbreite,-bohrhoehe,0])
+	VR.prof.append([bohrbreite,-bohrhoehe,0])
+	VR.prof.append([bohrbreite,bohrhoehe,0])
+	
+	VR.prof2 = []
+	VR.prof2.append([-bohrbreite,bohrhoehe,0])
+	VR.prof2.append([-bohrbreite,0,0])
+	VR.prof2.append([bohrbreite,0,0])
+	VR.prof2.append([bohrbreite,bohrhoehe,0])
+	
+	#Material
+	VR.m = VR.Material('pmat')
+	VR.m.setLit(True)
+	VR.m.setDiffuse(1,0,0)
+
+		
+	#Zylinder aka Fräser
+	cy = VR.Geometry('cylinder')
+	cy.setPrimitive('Cylinder')
+	cy.setMaterial(VR.m)
+	cy.setScale(bohrbreite, bohrhoehe, bohrbreite)
+	cy.setFrom(0,1,0)
+	cy.setDir(0, 0, 1)
+	
+	VR.cy = cy
+
+	VR.substract()
+
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="0" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="substract" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	Pi = math.pi
+	
+	r = VR.getRoot().find('Headlight')
+	
+	#destroy
+	old =	r.find('csg')
+	if old is not None:
+		old.destroy()
+	old =	r.find('cylinder')
+	if old is not None:
+		old.destroy()
+	old =	r.find('box')
+	if old is not None:
+		old.destroy()
+	old =	r.find('path')
+	if old is not None:
+		old.destroy()
+	old =	r.find('Rohling')
+	if old is not None:
+		old.destroy()
+	
+	if VR.full: #Umrandung auschneiden
+		#Path
+		p = VR.Path()
+		p.addPoint([0,-2,0],[0,1,0],VR.color,[0,0,1]) # up und dir waren coaxial, das darf nicht sein sonst kann man kein koord sys aufbauen
+		p.addPoint([0,2,0],[0,1,0],VR.color,[0,0,1])
+		p.compute(80)
+		VR.p = p
+	
+		#Stroke
+		s = VR.Stroke('path')
+		s.addPath(VR.p)
+		s.strokeProfile(VR.prof_pnts, True, True) # hier war VR.points als profil, das hat nicht gepasst
+		s.setMaterial(VR.m)
+	else:
+		#Path
+		p = VR.Path()
+		for i in range(len(VR.points)):
+			p.addPoint(VR.points[i],VR.directions[i],VR.color,VR.up)
+		p.close()
+		p.compute(10)
+		VR.p = p
+	
+		#Stroke
+		s = VR.Stroke('path')
+		s.addPath(VR.p)
+		s.strokeProfile(VR.prof, True, True)
+		#s.strokeProfile(VR.prof2, True, True)
+		s.setMaterial(VR.m)
+	
+	#Box
+	b = VR.Geometry('box')
+	b.setPrimitive('Box 2 1 2 1 1 1')
+	b = VR.loadGeometry('RohlingCollada.DAE')
+	b.rotate(1,0,0, -Pi*0.5)
+	
+	
+	if VR.sub:
+		#new CSG
+		c = VR.CSGGeometry('csg')
+		c.addChild(b)
+		c.addChild(s)
+		r.addChild(c)	
+		c.setOperation('subtract')
+		c.setEditMode(False)
+	else:
+		r.addChild(b)
+		r.addChild(s)
+		
+	#r.addChild(VR.cy)
+	#VR.cy.animate(VR.p,6,0,False)
+
+	
+</core>
+      <trig type="none" dev="mouse" state="Pressed" param="1000" key="3" name_suffix="1" base_name="trigger" name_space="__global__"/>
+    </Script>
+  </Scripts>
+  <Sockets/>
+  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Navigation active="Orbit"/>
+  <Materials/>
+</Scene>
