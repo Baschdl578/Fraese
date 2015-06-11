@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene name_suffix="0" base_name="Intersection" name_space="Scene">
+  <Objects>
+    <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1"/>
+  </Objects>
+  <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
+  <Scripts>
+    <Script name_suffix="0" base_name="Script" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+
+	VR.substract = False
+
+	box = VR.Geometry("sample cube")
+	box.setPrimitive("Box")
+	box.setScale(1,1,1)
+	box.setMaterial(VR.Material("sample material"))
+	
+	p0 = [-2,0,0]
+	p1 = [2,0,0]
+	
+	
+
+	VR.colChooser = VR.ColorChooser()
+	VR.colChooser.set(255,0,0)
+	c = VR.colChooser.get()
+	n0 = [-1,0,0]
+	
+	
+	path = VR.Path()
+	path.setStart(p0, n0, c)
+	path.setEnd(p1, n0, c)
+	path.compute(8)
+	
+	k = 0.40
+	
+	prof = []
+	prof.append([-k,0,0])
+	prof.append([0,k,0])
+	prof.append([k,0,0])
+	prof.append([k,-k,0])
+	prof.append([-k,-k,0])
+	
+	
+	stroke = VR.Stroke("stroke")
+	
+	stroke.setPath(path)
+	stroke.strokeProfile(prof, True, True)
+	
+	
+
+	
+	
+	
+	if VR.substract:
+		substract = VR.CSGGeometry('substract')
+		substract.addChild(box)
+		substract.addChild(stroke)
+		substract.setOperation('subtract')
+		substract.setEditMode(0)
+		substract.setMaterial(mchrome)	
+	
+		VR.getRoot().addChild(substract)
+	else:
+		VR.getRoot().addChild(stroke)
+		VR.getRoot().addChild(box)
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="0" base_name="trigger" name_space="__global__"/>
+    </Script>
+  </Scripts>
+  <Sockets/>
+  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Navigation active="Orbit"/>
+  <Materials/>
+</Scene>

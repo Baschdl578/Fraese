@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene name_suffix="0" base_name="IntersectionT" name_space="Scene">
+  <Objects>
+    <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
+      <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.943792 0.577 -1.03448" at="0.122175 0.2 -0.153942" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+          <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
+        </Object>
+      </Object>
+    </Object>
+  </Objects>
+  <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
+  <Scripts>
+    <Script name_suffix="0" base_name="INIT" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	VR.substract = False
+	VR.generate()
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="Substract" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	VR.getRoot().find("box").setVisible(False)
+	VR.getRoot().find("stroke").setVisible(False)
+	print "Switch"
+	VR.substract = not VR.substract
+	VR.generate()
+	
+</core>
+      <trig type="on_device" dev="mouse" state="Pressed" param="" key="0" name_suffix="1" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="generate" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+
+
+
+	box = VR.Geometry("box")
+	box.setPrimitive("Box")
+	k = 0.40
+	box.setScale(k,k,k)
+	box.setMaterial(VR.Material("sample material"))
+	
+	p0 = [-2,0,0]
+	p1 = [2,0,0]
+	
+
+	VR.colChooser = VR.ColorChooser()
+	VR.colChooser.set(255,0,0)
+	c = VR.colChooser.get()
+	n0 = [-1,0,0]
+	
+	
+	path = VR.Path()
+	path.setStart(p0, n0, c)
+	path.setEnd(p1, n0, c)
+	path.compute(8)
+	
+	k = 0.02
+	
+	prof = []
+	prof.append([-k,0,0])
+	prof.append([0,-k,0])
+	prof.append([k,0,0])
+	prof.append([k,k,0])
+	prof.append([-k,k,0])
+	
+	
+	stroke = VR.Stroke("stroke")
+	
+	stroke.setPath(path)
+	stroke.strokeProfile(prof, True, True)
+
+	if VR.substract:
+		substract = VR.CSGGeometry('substract')
+		substract.addChild(box)
+		substract.addChild(stroke)
+		substract.setOperation('subtract')
+		substract.setEditMode(0)
+		substract.setMaterial(mchrome)	
+	
+		VR.getRoot().addChild(substract)
+	else:
+		VR.getRoot().addChild(stroke)
+		VR.getRoot().addChild(box)
+</core>
+    </Script>
+  </Scripts>
+  <Sockets/>
+  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Navigation active="Orbit"/>
+  <Materials/>
+</Scene>
