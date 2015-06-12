@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.328591 0.357306 -0.855455" at="0.352669 0.296103 -0.0632228" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.0422146 -1.3847 -1.97416" at="0.352669 0.296103 -0.0632228" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="2500" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -26,7 +26,6 @@
 	class FraeseController:
 		def __init__(self,r):
 			print "initialisiere Fraesenklasse"
-			self.parent = r
 			VR.fraese_ablegepunkt = [0.325,0.37,0.07]
 			#VR.fraese_scale = 0.06
 			VR.fraese_scale = 0.095
@@ -37,12 +36,20 @@
 			self.Arm1 = VR.loadGeometry('Arm1.dae')
 			self.Arm2 = VR.loadGeometry('Arm2.dae')
 			self.Motor = VR.loadGeometry('Motor.dae')
+			
+			self.Base.addChild(self.LeftDoor)
+			self.Base.addChild(self.RightDoor)
+			self.Base.addChild(self.Arm1)
+			self.Base.addChild(self.Arm2)
+			self.Base.addChild(self.Motor)
+			
+			scale = 3
+			self.Base.rotate(1,0,0, -Pi)
+			self.Base.setScale(scale,scale,scale)
+			self.Base.setFrom(VR.fraese_ablegepunkt)
 			r.addChild(self.Base)
-			r.addChild(self.LeftDoor)
-			r.addChild(self.RightDoor)
-			r.addChild(self.Arm1)
-			r.addChild(self.Arm2)
-			r.addChild(self.Motor)
+			
+			
 			
 			#Door close (invert will nicht)
 			self.p1c = VR.Path()
@@ -65,7 +72,7 @@
 			rohling.rotate(1,0,0, -Pi)
 			rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			rohling.setFrom(VR.fraese_ablegepunkt)
-			self.parent.addChild(rohling)
+			self.Base.addChild(rohling)
 			
 			#fräsen
 			self.useDoor()
@@ -101,7 +108,7 @@
 					prof.append([b,0,-b])
 					prof.append([b,0,b])
 					s.strokeProfile(prof, True, True)
-					self.parent.addChild(s)
+					self.Base.addChild(s)
 				#abtrag
 				if paths[4]:
 					print "Abtrag"
@@ -125,7 +132,7 @@
 			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			objekt.setFrom(VR.fraese_ablegepunkt)
 			rohling.destroy()
-			self.parent.addChild(objekt)
+			self.Base.addChild(objekt)
 			
 			#objekt = VR.log.addProduct(felge)
 			#print objekt
